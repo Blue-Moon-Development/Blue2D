@@ -84,6 +84,3 @@ dkms.conf
 /cmake-build-debug
 
 /.idea
-
-!/vcpkg/*
-!/vcpkg
