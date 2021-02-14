@@ -39,8 +39,7 @@ int main(int argc, char** argv)
 	
 	Display display("Test App", 1280, 720);
 	
-	using namespace std::string_literals;
-	Shader shader("./assets/shaders/basic.vert"s, "./assets/shaders/basic.frag"s);
+	Shader shader("./assets/shaders/basic.vert", "./assets/shaders/basic.frag");
 	
 	float vertices[] = {
 			// positions         // colors

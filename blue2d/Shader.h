@@ -28,7 +28,6 @@ class Shader : public Bindable
 {
 public:
 	Shader(std::string vert, std::string frag);
-	Shader(const char* vertSrc, const char* fragSrc);
 	void bind() override;
 	
 	void setUniform(const std::string& name, const mat4f& value);

@@ -14,27 +14,30 @@
  * 
  * Contact: team@bluemoondev.org
  * 
- * File Name: Util.cpp.cc
- * Date File Created: 02/13/2021 at 8:28 PM
+ * File Name: Log.cpp.cc
+ * Date File Created: 02/14/2021 at 12:55 AM
  * Author: Matt
  */
 
-#include "Util.h"
+#include "Log.h"
 
-std::string read_file(const std::string& path)
+#include <spdlog/sinks/basic_file_sink.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
+
+Ref<spdlog::logger> Log::sLogger;
+
+void Log::init()
 {
-	constexpr auto readSize = std::size_t{4096};
-	auto stream = std::ifstream(path.data());
-	stream.exceptions(std::ios_base::badbit);
-	auto out = std::string();
-	auto buf = std::string(readSize, '\0');
+	list<spdlog::sink_ptr> logSinks;
+	logSinks.emplace_back(createRef<spdlog::sinks::basic_file_sink_mt>("blue2d.log", true));
+	logSinks.emplace_back(createRef<spdlog::sinks::stdout_color_sink_mt>());
 	
-	while(stream.read(&buf[0], readSize))
-	{
-		out.append(buf, 0, stream.gcount());
-	}
+	logSinks[0]->set_pattern("[%m-%d-%Y %H:%M:%S] [%l] [%g:%#] [%!] %n: %v");
+	logSinks[1]->set_pattern("%^[%T] [%l] %n: %v%$");
 	
-	out.append(buf, 0, stream.gcount());
-	
-	return out;
+	sLogger = createRef<spdlog::logger>("Blue2D", begin(logSinks), end(logSinks));
+	spdlog::register_logger(sLogger);
+	sLogger->set_level(spdlog::level::trace);
+	sLogger->flush_on(spdlog::level::trace);
 }
+

@@ -44,7 +44,7 @@ Shader::Shader(std::string vert, std::string frag):
 	if(!success)
 	{
 		glGetShaderInfoLog(vertShader, 512, nullptr, info);
-		std::cerr << "Vertex Shader Error: " << info << std::endl;
+		LOG_CRITICAL("Vertex Shader Error [{}]: {}", success, info);
 	}
 	
 	uint fragShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -56,7 +56,7 @@ Shader::Shader(std::string vert, std::string frag):
 	if(!success)
 	{
 		glGetShaderInfoLog(fragShader, 512, nullptr, info);
-		std::cerr << "Frag Shader Error: " << info << std::endl;
+		LOG_CRITICAL("Fragment Shader Error [{}]: {}", success, info);
 	}
 	
 	mProgram = glCreateProgram();
@@ -68,51 +68,12 @@ Shader::Shader(std::string vert, std::string frag):
 	if(!success)
 	{
 		glGetShaderInfoLog(mProgram, 512, nullptr, info);
-		std::cerr << "Shader linkage error: " << info << std::endl;
-	}
-}
-
-Shader::Shader(const char* vertSrc, const char* fragSrc)
-{
-	uint vertShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertShader, 1, &vertSrc, nullptr);
-	glCompileShader(vertShader);
-	int success;
-	char info[512];
-	glGetShaderiv(vertShader, GL_COMPILE_STATUS, &success);
-	
-	if(!success)
-	{
-		glGetShaderInfoLog(vertShader, 512, nullptr, info);
-		std::cerr << "Vertex Shader Error: " << info << std::endl;
+		LOG_CRITICAL("Shader Linkage Error [{}]: {}", success, info);
 	}
 	
-	uint fragShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragShader, 1, &fragSrc, nullptr);
-	glCompileShader(fragShader);
+	// TODO: Throw exceptions after critical logs, show window box on capture like in Mage3DX
 	
-	glGetShaderiv(fragShader, GL_COMPILE_STATUS, &success);
-	
-	if(!success)
-	{
-		glGetShaderInfoLog(fragShader, 512, nullptr, info);
-		std::cerr << "Frag Shader Error: " << info << std::endl;
-	}
-	
-	mProgram = glCreateProgram();
-	glAttachShader(mProgram, vertShader);
-	glAttachShader(mProgram, fragShader);
-	glLinkProgram(mProgram);
-	
-	glGetShaderiv(mProgram, GL_LINK_STATUS, &success);
-	if(!success)
-	{
-		glGetShaderInfoLog(mProgram, 512, nullptr, info);
-		std::cerr << "Shader linkage error: " << info << std::endl;
-	}
-	
-	glDeleteShader(vertShader);
-	glDeleteShader(fragShader);
+	LOG_INFO("Shader [id={}] loaded from files [{}] and [{}]", mProgram, mVertPath, mFragPath);
 }
 
 void Shader::bind()
