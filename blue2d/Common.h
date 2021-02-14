@@ -31,6 +31,16 @@
 	#define BLUE_DEBUG 1
 #endif
 
+#if defined(WIN32) || defined(WIN64) || defined(_WIN32) || defined(_WIN64) || defined(_WINDOWS)
+	#define OS_WINDOWS
+#elif defined(macintosh) || defined(Macintosh) || defined(__APPLE__) || defined(__MACH__)
+	#define OS_APPLE
+#elif defined(__unix__) || defined(__unix) || defined(__linux__) || defined(linux) || defined(__linux)
+	#define OS_UNIX
+#else
+	#define OS_OTHER
+#endif // OS Check
+
 #define STR(x) #x
 #define STR_EXPANDED(x) STR(x)
 
@@ -67,17 +77,16 @@ template<typename T>
 using Ref = std::shared_ptr<T>;
 
 template<typename T, typename... Args>
-constexpr UniquePtr<T> createScope(Args&&... args)
+constexpr UniquePtr<T> createScope(Args&& ... args)
 {
 	return std::make_unique<T>(std::forward<Args>(args)...);
 }
 
 template<typename T, typename... Args>
-constexpr SharedPtr<T> createRef(Args&&... args)
+constexpr SharedPtr<T> createRef(Args&& ... args)
 {
 	return std::make_shared<T>(std::forward<Args>(args)...);
 }
-
 
 
 #endif //BLUE2D_COMMON_H

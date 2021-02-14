@@ -21,6 +21,8 @@
 
 #include "Shader.h"
 #include "Util.h"
+#include "BlueException.h"
+
 #include <gl/glew.h>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -44,7 +46,8 @@ Shader::Shader(std::string vert, std::string frag):
 	if(!success)
 	{
 		glGetShaderInfoLog(vertShader, 512, nullptr, info);
-		LOG_CRITICAL("Vertex Shader Error [{}]: {}", success, info);
+		std::string err = fmt::format("Vertex Shader Error [{}]: {}", mVertPath, info);
+		throw SHADER_EXCEPTION(err);
 	}
 	
 	uint fragShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -56,7 +59,8 @@ Shader::Shader(std::string vert, std::string frag):
 	if(!success)
 	{
 		glGetShaderInfoLog(fragShader, 512, nullptr, info);
-		LOG_CRITICAL("Fragment Shader Error [{}]: {}", success, info);
+		std::string err = fmt::format("Fragment Shader Error [{}]: {}", mFragPath, info);
+		throw SHADER_EXCEPTION(err);
 	}
 	
 	mProgram = glCreateProgram();
@@ -68,7 +72,8 @@ Shader::Shader(std::string vert, std::string frag):
 	if(!success)
 	{
 		glGetShaderInfoLog(mProgram, 512, nullptr, info);
-		LOG_CRITICAL("Shader Linkage Error [{}]: {}", success, info);
+		std::string err = fmt::format("Shader Linkage Error [{} & {}]: {}", mVertPath, mFragPath, info);
+		throw SHADER_EXCEPTION(err);
 	}
 	
 	// TODO: Throw exceptions after critical logs, show window box on capture like in Mage3DX

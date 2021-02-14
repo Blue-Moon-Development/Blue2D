@@ -7,6 +7,8 @@
 #include <blue2d/Blue2D.h>
 #include <blue2d/Display.h>
 #include <blue2d/Shader.h>
+#include <blue2d/MsgBox.h>
+#include <blue2d/BlueException.h>
 
 static const char* vertex_shader_text =
 		"#version 330\n"
@@ -30,9 +32,7 @@ static const char* fragment_shader_text =
 		"}\n";
 
 
-
-
-int main(int argc, char** argv)
+void run()
 {
 	std::cout << "Hello world!\n";
 	Blue2D::init();
@@ -43,9 +43,9 @@ int main(int argc, char** argv)
 	
 	float vertices[] = {
 			// positions         // colors
-			0.5f, -0.5f,		1.0f, 0.0f, 0.0f,   // bottom right
-			-0.5f, -0.5f,		0.0f, 1.0f, 0.0f,   // bottom left
-			0.0f,  0.5f,		0.0f, 0.0f, 1.0f    // top
+			0.5f, -0.5f, 1.0f, 0.0f, 0.0f,   // bottom right
+			-0.5f, -0.5f, 0.0f, 1.0f, 0.0f,   // bottom left
+			0.0f, 0.5f, 0.0f, 0.0f, 1.0f    // top
 	};
 	
 	uint indices[] = {
@@ -60,7 +60,7 @@ int main(int argc, char** argv)
 //	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 //	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	
-	while(!display.isClosed())
+	while (!display.isClosed())
 	{
 		display.clear();
 		
@@ -79,8 +79,8 @@ int main(int argc, char** argv)
 		
 		
 		auto time = static_cast<float>(glfwGetTime());
-		float greenTime = (cos(time) / 2.0f) + 0.5f;
-		float blueTime = (sin(time) / 2.0f) + 0.5f;
+		float greenTime = ( cos(time) / 2.0f ) + 0.5f;
+		float blueTime = ( sin(time) / 2.0f ) + 0.5f;
 //		float time2 = greenTime * blueTime;
 		
 		shader.bind();
@@ -95,6 +95,32 @@ int main(int argc, char** argv)
 		glBindVertexArray(0);
 		
 		display.swap();
+	}
+}
+
+
+int main(int argc, char** argv)
+{
+	
+	try
+	{
+		run();
+	} catch (const BlueException& e)
+	{
+		LOG_CRITICAL(e.what());
+		MsgBox::show(e.getType(), e.what(), MsgBox::STYLE_ERROR);
+		return -1;
+	} catch (const std::exception& e)
+	{
+		LOG_CRITICAL(e.what());
+		MsgBox::show("STD Exception", e.what(), MsgBox::STYLE_ERROR);
+		return -1;
+	}
+	catch(...)
+	{
+		LOG_CRITICAL("Encountered an unknown fatal exception");
+		MsgBox::show("Unknown Exception", "No details available", MsgBox::STYLE_ERROR);
+		return -1;
 	}
 	
 	return 0;
