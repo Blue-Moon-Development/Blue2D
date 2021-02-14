@@ -31,10 +31,18 @@ public:
 	Shader(const char* vertSrc, const char* fragSrc);
 	void bind() override;
 	
+	void setUniform(const std::string& name, const mat4f& value);
+	void setUniform(const std::string& name, const vec4f& value);
+	void setUniform(const std::string& name, const vec3f& value);
+	void setUniform(const std::string& name, const vec2f& value);
+	void setUniform(const std::string& name, float value);
+	void setUniform(const std::string& name, int value);
+	void setUniform(const std::string& name, uint value);
 	
-	int getUniform(const std::string& name) const;
-	int getAttribute(const std::string& name) const;
+	
 private:
+	[[nodiscard]] int getUniformLocation(const std::string& name) const;
+	[[nodiscard]] int getAttributeLocation(const std::string& name) const;
 	std::string mVertPath;
 	std::string mFragPath;
 	uint mProgram;

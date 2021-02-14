@@ -22,6 +22,7 @@
 #include "Shader.h"
 #include "Util.h"
 #include <gl/glew.h>
+#include <glm/gtc/type_ptr.hpp>
 
 Shader::Shader(std::string vert, std::string frag):
 		mVertPath(std::move(vert)),
@@ -119,12 +120,47 @@ void Shader::bind()
 	glUseProgram(mProgram);
 }
 
-int Shader::getUniform(const std::string& name) const
+int Shader::getUniformLocation(const std::string& name) const
 {
 	return glGetUniformLocation(mProgram, name.c_str());
 }
 
-int Shader::getAttribute(const std::string& name) const
+int Shader::getAttributeLocation(const std::string& name) const
 {
 	return glGetAttribLocation(mProgram, name.c_str());
+}
+
+void Shader::setUniform(const std::string& name, const vec4f& value)
+{
+	glUniform4f(getUniformLocation(name), value.x, value.y, value.z, value.w);
+}
+
+void Shader::setUniform(const std::string& name, float value)
+{
+	glUniform1f(getUniformLocation(name), value);
+}
+
+void Shader::setUniform(const std::string& name, const mat4f& value)
+{
+	glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, glm::value_ptr(value));
+}
+
+void Shader::setUniform(const std::string& name, const vec3f& value)
+{
+	glUniform3f(getUniformLocation(name), value.x, value.y, value.z);
+}
+
+void Shader::setUniform(const std::string& name, const vec2f& value)
+{
+	glUniform2f(getUniformLocation(name), value.x, value.y);
+}
+
+void Shader::setUniform(const std::string& name, int value)
+{
+	glUniform1i(getUniformLocation(name), value);
+}
+
+void Shader::setUniform(const std::string& name, uint value)
+{
+	glUniform1ui(getUniformLocation(name), value);
 }
