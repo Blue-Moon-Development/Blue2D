@@ -5,7 +5,7 @@ find_package(imgui CONFIG REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(glm CONFIG REQUIRED)
 
-add_library(blue2d Blue2D.cpp Blue2D.h Display.h Display.cpp Shader.cpp Shader.h Bindable.h Common.h Util.cpp Util.h Log.cpp Log.h MsgBox.cpp MsgBox.h BlueException.cpp BlueException.h)
+add_library(blue2d Blue2D.cpp Blue2D.h Display.h Display.cpp Shader.cpp Shader.h Bindable.h Common.h Util.cpp Util.h Log.cpp Log.h MsgBox.cpp MsgBox.h BlueException.cpp BlueException.h Mesh.cpp Mesh.h Vertex.h)
 target_link_libraries(blue2d PUBLIC glfw spdlog::spdlog imgui::imgui GLEW::GLEW glm)
 target_precompile_headers(blue2d
         PUBLIC

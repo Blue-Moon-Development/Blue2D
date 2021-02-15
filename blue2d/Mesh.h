@@ -14,48 +14,32 @@
  * 
  * Contact: team@bluemoondev.org
  * 
- * File Name: MsgBox.h
- * Date File Created: 02/14/2021 at 2:38 PM
+ * File Name: Mesh.h
+ * Date File Created: 02/15/2021 at 12:43 AM
  * Author: Matt
  */
 
-#ifndef BLUE2D_MSGBOX_H
-#define BLUE2D_MSGBOX_H
+#ifndef BLUE2D_MESH_H
+#define BLUE2D_MESH_H
 
+#include "Vertex.h"
+#include "Bindable.h"
 
-class MsgBox
+class Mesh : public Bindable
 {
 public:
-	enum Styles
-	{
-		STYLE_INFO,
-		STYLE_WARNING,
-		STYLE_ERROR,
-		STYLE_QUESTION
-	};
+	Mesh(const list<Vertex>& vertices, const list<uint>& indices);
+	void bind() override;
 	
-	enum Buttons
-	{
-		BUTTON_OK,
-		BUTTON_OK_CANCEL,
-		BUTTON_YES_NO,
-		BUTTON_QUIT
-	};
+	void draw();
+private:
+	uint mVao{};
+	uint mVbo{};
+	uint mEbo{};
 	
-	enum Response
-	{
-		RESP_OK,
-		RESP_CANCEL,
-		RESP_YES,
-		RESP_NO,
-		RESP_QUIT,
-		RESP_NONE
-	};
-	
-	static Response show(const char* title, const char* msg,
-						 Styles style = STYLE_INFO, Buttons button = BUTTON_OK);
-	
+	list<Vertex> mVertices;
+	list<uint> mIndices;
 };
 
 
-#endif //BLUE2D_MSGBOX_H
+#endif //BLUE2D_MESH_H

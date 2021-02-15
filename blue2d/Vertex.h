@@ -14,48 +14,31 @@
  * 
  * Contact: team@bluemoondev.org
  * 
- * File Name: MsgBox.h
- * Date File Created: 02/14/2021 at 2:38 PM
+ * File Name: Vertex.h
+ * Date File Created: 02/15/2021 at 12:44 AM
  * Author: Matt
  */
 
-#ifndef BLUE2D_MSGBOX_H
-#define BLUE2D_MSGBOX_H
+#ifndef BLUE2D_VERTEX_H
+#define BLUE2D_VERTEX_H
 
-
-class MsgBox
+struct Position
 {
-public:
-	enum Styles
-	{
-		STYLE_INFO,
-		STYLE_WARNING,
-		STYLE_ERROR,
-		STYLE_QUESTION
-	};
-	
-	enum Buttons
-	{
-		BUTTON_OK,
-		BUTTON_OK_CANCEL,
-		BUTTON_YES_NO,
-		BUTTON_QUIT
-	};
-	
-	enum Response
-	{
-		RESP_OK,
-		RESP_CANCEL,
-		RESP_YES,
-		RESP_NO,
-		RESP_QUIT,
-		RESP_NONE
-	};
-	
-	static Response show(const char* title, const char* msg,
-						 Styles style = STYLE_INFO, Buttons button = BUTTON_OK);
-	
+	float x;
+	float y;
 };
 
+struct Color
+{
+	float r;
+	float g;
+	float b;
+};
 
-#endif //BLUE2D_MSGBOX_H
+struct Vertex
+{
+	Position pos;
+	Color color;
+};
+
+#endif //BLUE2D_VERTEX_H

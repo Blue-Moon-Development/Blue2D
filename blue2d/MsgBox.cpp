@@ -72,7 +72,7 @@ MsgBox::Response MsgBox::show(const char* title, const char* msg, MsgBox::Styles
 	flags |= getIcon(style);
 	flags |= getButtons(button);
 	return getResponse(MessageBox(nullptr, msg, title, flags), button);
-#endif
-	
+#else
 	return RESP_NONE;
+#endif
 }
